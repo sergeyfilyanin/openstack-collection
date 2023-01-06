@@ -6,5 +6,6 @@
   - name: Change dir
     shell: |
         cd /root/Downloads/Postman
+        newman run openstack-check.postman_collection.json
         /allure-1.0.0-e98dce0b638313a702f42b7e6cbac694323/bin/allure serve -p 32700
     become: yes

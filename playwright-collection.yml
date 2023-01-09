@@ -6,6 +6,6 @@
   - name: Run test
     shell: |
         cd /root/Desktop/playwright/tests
-        npx playwright test openstack-project.spec.js openstack-creation-az.spec.js --reporter=line,allure-playwright
+        npx playwright test openstack-project-headless-mode.spec.js openstack-creation-az-headless-mode.spec.js --reporter=line,allure-playwright
         /allure/bin/allure serve -p 32700
     become: yes

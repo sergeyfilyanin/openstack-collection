@@ -5,5 +5,5 @@
   tasks:
   - name: Run test
     shell: |
-        ls -ltr
+        echo "Connection succesfull"
     become: yes

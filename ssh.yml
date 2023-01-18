@@ -13,5 +13,4 @@
       path: /tmp/ssh-result.json
       block: |
         {"uuid":"ssh-test","historyId":"ssh-test","status":"passed","statusDetails":{"message":"Succesfull connected to compute node"},"stage":"pending","steps":[{"status":"passed","statusDetails":{},"stage":"pending","steps":[],"attachments":[],"parameters":[],"name":"INFO"}],"attachments":[],"parameters":[],"labels":[{"name":"parentSuite","value":"Ansible-Tests/SSH"},{"name":"suite","value":"Connection test"}],"links":[],"name":"ssh-test","fullName":"ssh-test"}
-    become: yes
     delegate_to: localhost

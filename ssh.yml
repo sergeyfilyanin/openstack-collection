@@ -1,6 +1,5 @@
 - name: "run test"
   hosts: compute
-  become: yes
 
   tasks:
   - name: Run test

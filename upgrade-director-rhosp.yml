@@ -1,0 +1,34 @@
+- name: "upgrade director"
+  hosts: undercloud
+
+  tasks:
+  - name: Install the command line tools
+    shell: |
+        sudo dnf install --allowerasing --nobest -y python3-tripleoclient
+    become_user: stack
+
+  - name: Generate the default container image preparation file 
+    shell: |
+        sudo openstack tripleo container image prepare default --local-push-destination --output-env-file /home/stack/containers-prepare-parameter.yaml
+    become_user: stack
+
+  - name: Set the container-tools repository module to version 3.0
+    shell: |
+        podman login registry.redhat.io -u envops -p 'Unix_11!'
+    become_user: stack
+
+  - name: Add the following parameter to the DEFAULT section in the file undercloud.conf
+    become: stack
+    lineinfile:
+      path: /home/stack/undercloud.conf
+      line: "container_images_file = /home/stack/containers-prepare-parameter.yaml"
+      state: present
+      backup: yes
+
+  - name: Add masquerade = false in the file undercloud.conf
+    become: stack
+    lineinfile:
+      path: /home/stack/undercloud.conf
+      line: "masquerade = false"
+      state: present
+      backup: yes

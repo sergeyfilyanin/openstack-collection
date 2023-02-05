@@ -1,0 +1,153 @@
+- name: "upgrade undercloud"
+  hosts: undercloud
+
+  tasks:
+  - name: Prerequisite for Validating Red Hat OpenStack Platform 13
+    shell: |
+        source ~/stackrc
+        curl -o pre-upgrade-validations.sh https://raw.githubusercontent.com/sergeyfilyanin/openstack-collection/master/pre-upgrade-validations.sh
+        chmod +x pre-upgrade-validations.sh
+    become_user: stack
+
+  - name: Validating Red Hat OpenStack Platform 13
+    shell: |
+        source ~/stackrc
+        ./pre-upgrade-validations.sh
+    become_user: stack
+    register: results_validate
+  - debug:
+      var: results_validate.stdout_lines
+
+  - name: "Add PermitRootLogin no if it does not exist"
+    become: yes
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      line: "PermitRootLogin no"
+      state: present
+      backup: yes
+
+# MUST UPDATE NIC
+
+  - name: Using predictable NIC names for the undercloud node
+    shell: |
+        curl -o playbook-nics.yaml https://raw.githubusercontent.com/sergeyfilyanin/openstack-collection/master/playbook-nics.yaml
+        ansible-playbook -c local -i localhost, playbook-nics.yaml
+    become_user: stack
+
+
+  - name: Validating hardware types
+    shell: |
+        source ~/stackrc
+        openstack baremetal driver list --type dynamic
+    become_user: stack
+    register: results_hardware_types
+  - debug:
+      var: results_hardware_types.stdout_lines
+
+  - name: New hardware type
+    shell: |
+        source ~/stackrc
+        OLDDRIVER="pxe_ipmitool"
+        NEWDRIVER="ipmi"
+        for NODE in $(openstack baremetal node list --driver $OLDDRIVER -c UUID -f value) ; do openstack baremetal node set $NODE --driver $NEWDRIVER; done
+    become_user: stack
+
+  - name: Disable OpenStack Services
+    shell: |
+        sudo systemctl stop 'openstack-*' httpd haproxy mariadb 'rabbitmq*' docker xinetd
+    become_user: stack
+    ignore_errors: true
+
+  - name: Remove Red Hat OpenStack Platform director packages
+    shell: |
+      curl -o remove.sh https://raw.githubusercontent.com/sergeyfilyanin/openstack-collection/master/remove.sh
+      chmod +x remove.sh
+      ./remove.sh
+    become_user: stack
+    register: results_remove
+  - debug:
+      var: results_remove.stdout_lines
+
+  - name: Remove the content from the /etc/httpd and /var/lib/docker directories
+    shell: |
+        sudo rm -rf /etc/httpd /var/lib/docker
+    become_user: stack
+    ignore_errors: true
+    
+
+  - name: Install the Leapp utility and jq
+    shell: |
+        sudo yum install leapp -y
+        sudo yum install jq -y
+    become_user: stack
+
+  - name: Refresh subscription
+    shell: |
+        sudo subscription-manager refresh
+    become_user: stack
+
+  - name: Substitute the Open vSwitch version
+    shell: |
+        echo 'openvswitch2.11' | sudo tee -a /etc/leapp/transaction/to_remove
+        echo 'openvswitch2.15' | sudo tee -a /etc/leapp/transaction/to_install
+    become_user: stack
+
+  - name: Retain the Red Hat Ceph Storage 3 version of ceph-ansible
+    shell: |
+        echo 'ceph-ansible' | sudo tee -a /etc/leapp/transaction/to_keep
+    become_user: stack
+
+
+  - name: Adjust the kernel modules
+    shell: |
+        sudo curl -o adjust-kernel.sh https://raw.githubusercontent.com/sergeyfilyanin/openstack-collection/master/adjust-kernel.sh
+        sudo chmod +x adjust-kernel.sh
+        sudo ./adjust-kernel.sh
+    become_user: stack
+
+  - name: Remove the pam_pkcs11 module
+    shell: |
+      sudo leapp answer --add --section remove_pam_pkcs11_module_check.confirm=True
+    become_user: stack
+
+  - name: Set env variable
+    shell: |
+      export LEAPP_UNSUPPORTED=1
+      export LEAPP_DEVEL_TARGET_RELEASE=8.
+    become_user: stack
+
+  - name: Remove the persistent network names 
+    shell: |
+      sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/persistentnetnamesdisable/actor.py
+    become_user: stack
+
+  - name: Download leapp-data
+    shell: |
+      sudo curl -o device_driver_deprecation_data.json https://raw.githubusercontent.com/sergeyfilyanin/openstack-collection/master/leapp-data/device_driver_deprecation_data.json
+      sudo mv device_driver_deprecation_data.json /etc/leapp/files/ 
+    become_user: stack
+
+  - name: Adjust the kernel modules
+    shell: |
+        sudo curl -o adjust-kernel.sh https://raw.githubusercontent.com/sergeyfilyanin/openstack-collection/master/adjust-kernel.sh
+        sudo chmod +x adjust-kernel.sh
+        sudo ./adjust-kernel.sh
+    become_user: stack
+
+  - name: Rm floppy and pata_acpi drivers
+    shell: |
+      sudo rmmod floppy
+      sudo rmmod pata_acpi
+    become_user: stack
+    ignore_errors: true
+
+  - name: Start the Leapp upgrade process
+    shell: |
+      sudo -E leapp upgrade --debug --enablerepo rhel-8-for-x86_64-baseos-eus-rpms --enablerepo rhel-8-for-x86_64-appstream-eus-rpms --enablerepo fast-datapath-for-rhel-8-x86_64-rpms --enablerepo ansible-2.9-for-rhel-8-x86_64-rpms
+    become_user: stack
+
+#  - name: Reboot the undercloud
+#    shell: |
+#      sudo touch /.autorelabel
+#      sudo reboot
+#    become_user: stack

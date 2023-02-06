@@ -2,42 +2,42 @@
   hosts: undercloud
 
   tasks:
-  - name: Prerequisite for Validating Red Hat OpenStack Platform 13
-    shell: |
-        source ~/stackrc
-        curl -o pre-upgrade-validations.sh https://raw.githubusercontent.com/sergeyfilyanin/openstack-collection/master/pre-upgrade-validations.sh
-        chmod +x pre-upgrade-validations.sh
-    become_user: stack
+#  - name: Prerequisite for Validating Red Hat OpenStack Platform 13
+#    shell: |
+#        source ~/stackrc
+#        curl -o pre-upgrade-validations.sh https://raw.githubusercontent.com/sergeyfilyanin/openstack-collection/master/pre-upgrade-validations.sh
+#        chmod +x pre-upgrade-validations.sh
+#    become_user: stack
 
-  - name: Validating Red Hat OpenStack Platform 13
-    shell: |
-        source ~/stackrc
-        ./pre-upgrade-validations.sh
-    become_user: stack
-    register: results_validate
-  - debug:
-      var: results_validate.stdout_lines
+#  - name: Validating Red Hat OpenStack Platform 13
+#    shell: |
+#        source ~/stackrc
+#        ./pre-upgrade-validations.sh
+#    become_user: stack
+#    register: results_validate
+#  - debug:
+#      var: results_validate.stdout_lines
 
-  - name: "Add PermitRootLogin no if it does not exist"
-    become: yes
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      line: "PermitRootLogin no"
-      state: present
-      backup: yes
+#  - name: "Add PermitRootLogin no if it does not exist"
+#    become: yes
+#    lineinfile:
+#      path: /etc/ssh/sshd_config
+#      line: "PermitRootLogin no"
+#      state: present
+#      backup: yes
 
 # MUST UPDATE NIC
 
-  - name: Using predictable NIC names for the undercloud node
-    shell: |
-        curl -o playbook-nics.yaml https://raw.githubusercontent.com/sergeyfilyanin/openstack-collection/master/playbook-nics.yaml
-        ansible-playbook -c local -i localhost, playbook-nics.yaml
-    become_user: stack
+#  - name: Using predictable NIC names for the undercloud node
+#    shell: |
+#        curl -o playbook-nics.yaml https://raw.githubusercontent.com/sergeyfilyanin/openstack-collection/master/playbook-nics.yaml
+#        ansible-playbook -c local -i localhost, playbook-nics.yaml
+#    become_user: stack
 
-  - name: Reboot after upgrade NIC names
-    shell: |
-      sudo reboot
-    become_user: stack
+#  - name: Reboot after upgrade NIC names
+#    shell: |
+#      sudo reboot
+#    become_user: stack
 
   - name: Validating hardware types
     shell: |

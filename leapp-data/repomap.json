@@ -1,5 +1,5 @@
 {
-    "datetime": "202301311417Z",
+    "datetime": "202303072246Z",
     "version_format": "1.0.0",
     "mapping": [
         {
@@ -68,6 +68,12 @@
                     "source": "rhel7-highavailability",
                     "target": [
                         "rhel8-HighAvailability"
+                    ]
+                },
+                {
+                    "source": "rhel7-ansible-2",
+                    "target": [
+                        "rhel8-ansible-2"
                     ]
                 },
                 {
@@ -361,6 +367,14 @@
                 },
                 {
                     "major_version": "7",
+                    "repoid": "rhel-7-server-rhui-rpms",
+                    "arch": "x86_64",
+                    "channel": "ga",
+                    "repo_type": "rpm",
+                    "rhui": "azure"
+                },
+                {
+                    "major_version": "7",
                     "repoid": "rhel-7-server-rpms",
                     "arch": "x86_64",
                     "channel": "ga",
@@ -379,14 +393,6 @@
                     "repoid": "rhui-rhel-7-server-rhui-eus-rpms",
                     "arch": "x86_64",
                     "channel": "eus",
-                    "repo_type": "rpm",
-                    "rhui": "azure"
-                },
-                {
-                    "major_version": "7",
-                    "repoid": "rhui-rhel-7-server-rhui-rpms",
-                    "arch": "x86_64",
-                    "channel": "ga",
                     "repo_type": "rpm",
                     "rhui": "azure"
                 },
@@ -550,19 +556,19 @@
                 },
                 {
                     "major_version": "7",
+                    "repoid": "rhel-7-server-rhui-optional-rpms",
+                    "arch": "x86_64",
+                    "channel": "ga",
+                    "repo_type": "rpm",
+                    "rhui": "azure"
+                },
+                {
+                    "major_version": "7",
                     "repoid": "rhui-rhel-7-server-e4s-optional-rhui-rpms",
                     "arch": "x86_64",
                     "channel": "e4s",
                     "repo_type": "rpm",
                     "rhui": "google"
-                },
-                {
-                    "major_version": "7",
-                    "repoid": "rhui-rhel-7-server-rhui-optional-rpms",
-                    "arch": "x86_64",
-                    "channel": "ga",
-                    "repo_type": "rpm",
-                    "rhui": "azure"
                 },
                 {
                     "major_version": "7",
@@ -637,18 +643,18 @@
                 },
                 {
                     "major_version": "7",
-                    "repoid": "rhel-7-server-supplementary-rpms",
-                    "arch": "x86_64",
-                    "channel": "ga",
-                    "repo_type": "rpm"
-                },
-                {
-                    "major_version": "7",
-                    "repoid": "rhui-rhel-7-server-rhui-supplementary-rpms",
+                    "repoid": "rhel-7-server-rhui-supplementary-rpms",
                     "arch": "x86_64",
                     "channel": "ga",
                     "repo_type": "rpm",
                     "rhui": "azure"
+                },
+                {
+                    "major_version": "7",
+                    "repoid": "rhel-7-server-supplementary-rpms",
+                    "arch": "x86_64",
+                    "channel": "ga",
+                    "repo_type": "rpm"
                 },
                 {
                     "major_version": "7",
@@ -765,7 +771,7 @@
                 },
                 {
                     "major_version": "7",
-                    "repoid": "rhui-rhel-7-server-rhui-extras-rpms",
+                    "repoid": "rhel-7-server-rhui-extras-rpms",
                     "arch": "x86_64",
                     "channel": "ga",
                     "repo_type": "rpm",
@@ -1093,14 +1099,6 @@
                 },
                 {
                     "major_version": "7",
-                    "repoid": "rhel-ha-for-rhel-7-server-eus-rhui-rpms",
-                    "arch": "x86_64",
-                    "channel": "eus",
-                    "repo_type": "rpm",
-                    "rhui": "azure"
-                },
-                {
-                    "major_version": "7",
                     "repoid": "rhel-ha-for-rhel-7-server-eus-rpms",
                     "arch": "x86_64",
                     "channel": "eus",
@@ -1136,6 +1134,19 @@
                     "channel": "e4s",
                     "repo_type": "rpm",
                     "rhui": "google"
+                }
+            ]
+        },
+        {
+            "pesid": "rhel7-ansible-2",
+            "entries": [
+                {
+                    "major_version": "7",
+                    "repoid": "rhel-7-server-ansible-2-rhui-rpms",
+                    "arch": "x86_64",
+                    "channel": "ga",
+                    "repo_type": "rpm",
+                    "rhui": "azure"
                 }
             ]
         },
@@ -1736,6 +1747,14 @@
                 },
                 {
                     "major_version": "8",
+                    "repoid": "codeready-builder-for-rhel-8-x86_64-eus-rhui-rpms",
+                    "arch": "x86_64",
+                    "channel": "eus",
+                    "repo_type": "rpm",
+                    "rhui": "azure"
+                },
+                {
+                    "major_version": "8",
                     "repoid": "codeready-builder-for-rhel-8-x86_64-eus-rpms",
                     "arch": "x86_64",
                     "channel": "eus",
@@ -2118,14 +2137,6 @@
                 },
                 {
                     "major_version": "8",
-                    "repoid": "rhel-8-for-x86_64-sap-solutions-eus-rhui-rpms",
-                    "arch": "x86_64",
-                    "channel": "eus",
-                    "repo_type": "rpm",
-                    "rhui": "azure"
-                },
-                {
-                    "major_version": "8",
                     "repoid": "rhel-8-for-x86_64-sap-solutions-eus-rpms",
                     "arch": "x86_64",
                     "channel": "eus",
@@ -2300,6 +2311,19 @@
             ]
         },
         {
+            "pesid": "rhel8-ansible-2",
+            "entries": [
+                {
+                    "major_version": "8",
+                    "repoid": "ansible-2-for-rhel-8-x86_64-rhui-rpms",
+                    "arch": "x86_64",
+                    "channel": "ga",
+                    "repo_type": "rpm",
+                    "rhui": "azure"
+                }
+            ]
+        },
+        {
             "pesid": "rhel8-rhui-client-config-server-8",
             "entries": [
                 {
@@ -2338,17 +2362,17 @@
             "entries": [
                 {
                     "major_version": "8",
-                    "repoid": "microsoft-azure-rhel8-eus",
+                    "repoid": "rhui-microsoft-azure-rhel8",
                     "arch": "x86_64",
-                    "channel": "eus",
+                    "channel": "ga",
                     "repo_type": "rpm",
                     "rhui": "azure"
                 },
                 {
                     "major_version": "8",
-                    "repoid": "rhui-microsoft-azure-rhel8",
+                    "repoid": "rhui-microsoft-azure-rhel8-eus",
                     "arch": "x86_64",
-                    "channel": "ga",
+                    "channel": "eus",
                     "repo_type": "rpm",
                     "rhui": "azure"
                 }
@@ -2360,6 +2384,19 @@
                 {
                     "major_version": "8",
                     "repoid": "rhui-microsoft-azure-rhel8-sap-ha",
+                    "arch": "x86_64",
+                    "channel": "ga",
+                    "repo_type": "rpm",
+                    "rhui": "azure"
+                }
+            ]
+        },
+        {
+            "pesid": "rhel8-rhui-microsoft-azure-sap-apps",
+            "entries": [
+                {
+                    "major_version": "8",
+                    "repoid": "rhui-microsoft-azure-rhel8-sapapps",
                     "arch": "x86_64",
                     "channel": "ga",
                     "repo_type": "rpm",
@@ -2490,19 +2527,6 @@
                     "arch": "x86_64",
                     "channel": "ga",
                     "repo_type": "rpm"
-                }
-            ]
-        },
-        {
-            "pesid": "rhel8-rhui-microsoft-azure-sap-apps",
-            "entries": [
-                {
-                    "major_version": "8",
-                    "repoid": "microsoft-azure-rhel8-sapapps",
-                    "arch": "x86_64",
-                    "channel": "eus",
-                    "repo_type": "rpm",
-                    "rhui": "azure"
                 }
             ]
         },
@@ -3626,5 +3650,8 @@
                 }
             ]
         }
+    ],
+    "provided_data_streams": [
+        "1.0"
     ]
 }
